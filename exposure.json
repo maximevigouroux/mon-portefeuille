@@ -1,0 +1,10 @@
+{"_note": "Estimations approximatives (en %), à corriger avec les fiches des ETF.",
+"Monde": {"geo": {"USA":72,"Europe":16,"Japon":6,"Autres":6}, "sector": {"Tech":26,"Finance":16,"Santé":10,"Industrie":11,"Conso":20,"Autres":17}},
+"Europe": {"geo": {"Europe":100}, "sector": {"Tech":8,"Finance":20,"Santé":17,"Industrie":18,"Conso":20,"Autres":17}},
+"Émergents": {"geo": {"Émergents":100}, "sector": {"Tech":25,"Finance":22,"Santé":3,"Industrie":8,"Conso":20,"Autres":22}},
+"Japon": {"geo": {"Japon":100}, "sector": {"Tech":18,"Finance":14,"Santé":8,"Industrie":24,"Conso":24,"Autres":12}},
+"S&P 500": {"geo": {"USA":100}, "sector": {"Tech":33,"Finance":13,"Santé":10,"Industrie":9,"Conso":19,"Autres":16}},
+"Assurances Stoxx 600": {"geo": {"Europe":100}, "sector": {"Finance":100}},
+"Défense USD": {"geo": {"USA":65,"Europe":30,"Autres":5}, "sector": {"Tech":15,"Industrie":85}},
+"Small caps Europe": {"geo": {"Europe":100}, "sector": {"Tech":8,"Finance":12,"Santé":8,"Industrie":30,"Conso":15,"Autres":27}},
+"S&P 500 Tech": {"geo": {"USA":100}, "sector": {"Tech":100}}}
