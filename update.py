@@ -2,7 +2,18 @@
 import csv, json, datetime as dt
 import pandas as pd, yfinance as yf
 
-rows = list(csv.DictReader(open("holdings.csv", encoding="utf-8")))
+txt = open("holdings.csv", encoding="utf-8-sig").read().splitlines()
+delim = ";" if txt[0].count(";") > txt[0].count(",") else ","
+rows = []
+for r in csv.DictReader(txt, delimiter=delim):
+    r = {k: (v or "").strip() for k, v in r.items() if k}
+    if not r.get("name"):
+        continue
+    manquants = [k for k in ("ticker", "envelope", "invested_eur", "buy_date") if not r.get(k)]
+    if manquants:
+        raise SystemExit(f"holdings.csv : la ligne '{r['name']}' n'a pas de valeur pour {manquants}")
+    r["invested_eur"] = r["invested_eur"].replace(",", ".")
+    rows.append(r)
 expo = json.load(open("exposure.json", encoding="utf-8"))
 ok = []
 for r in rows:
