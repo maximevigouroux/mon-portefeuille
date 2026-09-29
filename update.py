@@ -73,5 +73,6 @@ data = {
                                 for k, v in perf_series.items()}},
     "geo": agg("geo"), "sector": agg("sector"),
 }
+import os
+os.makedirs("docs", exist_ok=True)
 json.dump(data, open("docs/data.json", "w", encoding="utf-8"), ensure_ascii=False)
-print("data.json mis à jour,", len(holdings), "lignes")
