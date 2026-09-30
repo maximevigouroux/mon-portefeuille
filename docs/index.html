@@ -25,12 +25,15 @@ function layout(it,x,y,w,h,out){
  const a=it.slice(0,i),b=it.slice(i),f=acc/tot;
  if(w>=h){layout(a,x,y,w*f,h,out);layout(b,x+w*f,y,w*(1-f),h,out)}
  else{layout(a,x,y,w,h*f,out);layout(b,x,y+h*f,w,h*(1-f),out)}}
-function color(p){const a=Math.min(Math.abs(p)/10,1);return p>=0?`rgba(34,${120+80*a|0},80,1)`:`rgba(${150+90*a|0},50,60,1)`}
+function color(o){
+ if(o.perf_pct<0){const a=Math.min(Math.abs(o.perf_pct)/10,1);return `rgb(${150+90*a|0},50,60)`}
+ if(o.day_pct<0){const a=Math.min(Math.abs(o.day_pct)/3,1);return `rgb(${210+30*a|0},${130-30*a|0},30)`}
+ const a=Math.min(o.perf_pct/10,1);return `rgb(34,${120+80*a|0},80)`}
 fetch("data.json?"+Date.now()).then(r=>r.json()).then(d=>{
  const gain=d.total_value-d.total_invested;
  document.getElementById("sub").innerHTML=`Valeur : <b>${d.total_value.toFixed(0)} €</b> · Investi : ${d.total_invested.toFixed(0)} € · <span class="${gain>=0?'pos':'neg'}">${gain>=0?'+':''}${gain.toFixed(0)} €</span> · maj ${d.updated}`;
  const items=[...d.holdings].sort((a,b)=>b.value-a.value),out=[];layout(items,0,0,100,100,out);
- document.getElementById("tm").innerHTML=out.map(o=>`<div style="left:${o.x}%;top:${o.y}%;width:${o.w}%;height:${o.h}%;background:${color(o.perf_pct)}"><b>${o.name}</b><br>${o.value.toFixed(0)} € (${o.envelope})<br>${o.perf_pct>=0?'+':''}${o.perf_pct}% · jour ${o.day_pct>=0?'+':''}${o.day_pct}%</div>`).join("");
+ document.getElementById("tm").innerHTML=out.map(o=>`<div style="left:${o.x}%;top:${o.y}%;width:${o.w}%;height:${o.h}%;background:${color(o)}"><b>${o.name}</b><br>${o.value.toFixed(0)} € (${o.envelope})<br>${o.perf_pct>=0?'+':''}${o.perf_pct}% · jour ${o.day_pct>=0?'+':''}${o.day_pct}%</div>`).join("");
  const H=d.history,ds=[{label:"Total",data:H.total_perf,borderColor:"#fff",borderWidth:3,pointRadius:H.dates.length<3?4:0}];
  Object.entries(H.per_holding).forEach(([k,v],i)=>ds.push({label:k,data:v,borderColor:pal[i%9],borderWidth:1.5,pointRadius:H.dates.length<3?4:0}));
  new Chart(perf,{type:"line",data:{labels:H.dates,datasets:ds},options:{plugins:{legend:{labels:{color:"#ccc"}}},scales:{x:{ticks:{color:"#999"}},y:{ticks:{color:"#999"}}}}});
