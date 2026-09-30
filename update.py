@@ -22,7 +22,7 @@ for r in rows:
     else:
         ok.append(r)
 
-start = min(r["buy_date"] for r in ok)
+start = (pd.Timestamp(min(r["buy_date"] for r in ok)) - pd.Timedelta(days=10)).strftime("%Y-%m-%d")
 raw = yf.download([r["ticker"] for r in ok], start=start, auto_adjust=True, progress=False)["Close"]
 if isinstance(raw, pd.Series):
     raw = raw.to_frame(ok[0]["ticker"])
