@@ -39,6 +39,7 @@ for r in ok:
     after = s[s.index >= bd]
     if after.empty:                       # date d'achat future : on prend le dernier cours
         after = s.iloc[[-1]]
+    print(f"{r['name']} : achat le {after.index[0].date()} à {after.iloc[0]:.2f}, dernier cours le {s.index[-1].date()} à {s.iloc[-1]:.2f}")
     inv = float(r["invested_eur"])
     shares = inv / float(after.iloc[0])
     v = (shares * after)
