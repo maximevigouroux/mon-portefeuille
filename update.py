@@ -23,10 +23,15 @@ for r in rows:
         ok.append(r)
 
 start = (pd.Timestamp(min(r["buy_date"] for r in ok)) - pd.Timedelta(days=10)).strftime("%Y-%m-%d")
-raw = yf.download([r["ticker"] for r in ok], start=start, auto_adjust=True, progress=False)["Close"]
-if isinstance(raw, pd.Series):
-    raw = raw.to_frame(ok[0]["ticker"])
-px = raw.ffill()
+end = (pd.Timestamp.today() + pd.Timedelta(days=2)).strftime("%Y-%m-%d")
+cols = {}
+for r in ok:
+    h = yf.Ticker(r["ticker"]).history(start=start, end=end, auto_adjust=True)
+    if not h.empty:
+        h.index = h.index.tz_localize(None).normalize()
+        cols[r["ticker"]] = h["Close"]
+px = pd.DataFrame(cols).ffill()
+print("Dernière date de cours reçue :", px.index.max().date())
 
 holdings, value_series, perf_series = [], {}, {}
 for r in ok:
