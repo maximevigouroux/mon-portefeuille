@@ -39,7 +39,7 @@ Object.entries(H.per_holding).forEach(([k,v],i)=>base.push({label:k,data:v,color
 const ds=base.map(b=>({label:b.label,data:b.data,borderColor:b.color,backgroundColor:b.color,borderWidth:b.w,pointRadius:3,pointHoverRadius:6,pointBackgroundColor:b.color,pointBorderColor:b.color,tension:0}));
 let hov=-1;
 const glow={id:"glow",
- beforeDatasetDraw(c,a){if(a.index===hov){c.ctx.save();c.ctx.shadowColor=c.data.datasets[a.index].borderColor;c.ctx.shadowBlur=18;}},
+ beforeDatasetDraw(c,a){if(a.index===hov){c.ctx.save();c.ctx.shadowColor=c.data.datasets[a.index].borderColor;c.ctx.shadowBlur=10;}},
  afterDatasetDraw(c,a){if(a.index===hov)c.ctx.restore();}};
 new Chart(perf,{type:"line",data:{labels:H.dates,datasets:ds},plugins:[glow],options:{
  interaction:{mode:"nearest",intersect:false},
