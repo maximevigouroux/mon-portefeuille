@@ -31,9 +31,18 @@ fetch("data.json?"+Date.now()).then(r=>r.json()).then(d=>{
  document.getElementById("sub").innerHTML=`Valeur : <b>${d.total_value.toFixed(0)} €</b> · Investi : ${d.total_invested.toFixed(0)} € · <span class="${gain>=0?'pos':'neg'}">${gain>=0?'+':''}${gain.toFixed(0)} €</span> · maj ${d.updated}`;
  const items=[...d.holdings].sort((a,b)=>b.value-a.value),out=[];layout(items,0,0,100,100,out);
  document.getElementById("tm").innerHTML=out.map(o=>`<div style="left:${o.x}%;top:${o.y}%;width:${o.w}%;height:${o.h}%;background:${color(o.perf_pct)}"><b>${o.name}</b><br>${o.value.toFixed(0)} € (${o.envelope})<br>${o.perf_pct>=0?'+':''}${o.perf_pct}% · jour ${o.day_pct>=0?'+':''}${o.day_pct}%</div>`).join("");
- const H=d.history,ds=[{label:"Total",data:H.total_perf,borderColor:"#fff",borderWidth:3,pointRadius:0}];
- Object.entries(H.per_holding).forEach(([k,v],i)=>ds.push({label:k,data:v,borderColor:pal[i%9],borderWidth:1.5,pointRadius:0}));
- new Chart(perf,{type:"line",data:{labels:H.dates,datasets:ds},options:{plugins:{legend:{labels:{color:"#ccc"}}},scales:{x:{ticks:{color:"#999"}},y:{ticks:{color:"#999"}}}}});
+ const H=d.history,base=[{label:"Total",data:H.total_perf,color:"#ffffff",w:3}];
+Object.entries(H.per_holding).forEach(([k,v],i)=>base.push({label:k,data:v,color:pal[i%9],w:1.5}));
+const ds=base.map(b=>({label:b.label,data:b.data,borderColor:b.color,backgroundColor:b.color,borderWidth:b.w,pointRadius:3,pointHoverRadius:6,pointBackgroundColor:b.color,pointBorderColor:b.color,tension:0}));
+let hov=-1;
+const glow={id:"glow",
+ beforeDatasetDraw(c,a){if(a.index===hov){c.ctx.save();c.ctx.shadowColor=c.data.datasets[a.index].borderColor;c.ctx.shadowBlur=18;}},
+ afterDatasetDraw(c,a){if(a.index===hov)c.ctx.restore();}};
+new Chart(perf,{type:"line",data:{labels:H.dates,datasets:ds},plugins:[glow],options:{
+ interaction:{mode:"nearest",intersect:false},
+ onHover:(e,els,c)=>{const i=els.length?els[0].datasetIndex:-1;if(i===hov)return;
+  hov=i;c.data.datasets.forEach((s,j)=>{s.borderWidth=j===i?base[j].w+3:base[j].w;s.pointRadius=j===i?5:3;});c.update("none");},
+ plugins:{legend:{labels:{color:"#ccc"}}},scales:{x:{ticks:{color:"#999"}},y:{ticks:{color:"#999"}}}}});
  const pie=(id,o)=>new Chart(id,{type:"doughnut",data:{labels:Object.keys(o),datasets:[{data:Object.values(o),backgroundColor:pal}]},options:{plugins:{legend:{position:"right",labels:{color:"#ccc"}}}}});
  pie(geo,d.geo);pie(sec,d.sector);
 });
