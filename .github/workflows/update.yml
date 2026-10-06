@@ -1,7 +1,8 @@
 name: Mise à jour nocturne
 on:
   schedule:
-    - cron: "0 20 * * 1-5"   # 20h UTC, jours de bourse
+      - cron: "0 8 * * 2-6"    # 8h UTC, soit 10h à Paris (9h l'hiver)
+      - cron: "0 11 * * 2-6"   # 11h UTC, soit 13h à Paris (12h l'hiver)
   workflow_dispatch:
 permissions:
   contents: write
