@@ -7,4 +7,5 @@
 "Assurances Stoxx 600": {"geo": {"Europe":100}, "sector": {"Finance":100}},
 "Défense USD": {"geo": {"USA":65,"Europe":30,"Autres":5}, "sector": {"Tech":15,"Industrie":85}},
 "Small caps Europe": {"geo": {"Europe":100}, "sector": {"Tech":8,"Finance":12,"Santé":8,"Industrie":30,"Conso":15,"Autres":27}},
-"S&P 500 Tech": {"geo": {"USA":100}, "sector": {"Tech":100}}}
+"S&P 500 Tech": {"geo": {"USA":100}, "sector": {"Tech":100}}
+"ARM": {"geo": {"Europe": 100}, "sector": {"Tech": 100}}}
