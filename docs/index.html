@@ -17,7 +17,6 @@ h1{margin:0 0 4px}.sub{color:#9aa;margin-bottom:16px;line-height:1.5}
 <div class="card"><b>Secteurs</b><canvas id="sec"></canvas></div></div>
 <script>
 const pal=["#4e79a7","#f28e2b","#e15759","#76b7b2","#59a14f","#edc948","#b07aa1","#ff9da7","#9c755f","#17becf","#bcbd22","#8c6bb1"];
-const NC=200;
 function layout(it,x,y,w,h,out){
  if(it.length==1){out.push({...it[0],x,y,w,h});return}
  const tot=it.reduce((a,b)=>a+b.value,0);let acc=0,i=0;
@@ -38,7 +37,7 @@ fetch("data.json?"+Date.now()).then(r=>r.json()).then(d=>{
  document.getElementById("sub").innerHTML=
   "Valeur : <b>"+d.total_value.toFixed(0)+" €</b> · Investi : "+d.total_invested.toFixed(0)+" € · "+
   "<span class='"+(gain>=0?"pos":"neg")+"'>"+sg(gain.toFixed(0))+" €</span> · maj "+d.updated+
-  "<br>Non coté : "+NC+" € · <b>Total investi tous supports : "+(d.total_invested+NC).toFixed(0)+" €</b>";
+   "";
 
  const items=[...d.holdings].sort((a,b)=>b.value-a.value),out=[];
  layout(items,0,0,100,100,out);
